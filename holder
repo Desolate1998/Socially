@@ -1,0 +1,278 @@
+import { StatusBar } from 'expo-status-bar';
+import { useEffect, useState } from 'react';
+import { Button, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Appearance, useColorScheme } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const AutoThemeSwitch = () => {
+  const [isEnabled, setIsEnabled] = useState(false);
+
+  const styles = StyleSheet.create({
+    switchContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    label: {
+      marginRight: 10,
+    },
+  });
+  useEffect(() => {
+    // Load the user's theme preference from AsyncStorage (default to false, which is light mode)
+    async function loadThemePreference() {
+      try {
+        const value = await AsyncStorage.getItem('theme_preference');
+        if (value !== null) {
+          setIsEnabled(value === 'dark'); // Convert the stored value to a boolean
+        }
+      } catch (error) {
+        console.error('Error loading theme preference:', error);
+      }
+    }
+
+    loadThemePreference();
+  }, []);
+
+  const toggleSwitch = async () => {
+    const newIsEnabled = !isEnabled;
+    setIsEnabled(newIsEnabled);
+
+    // Save the new theme preference to AsyncStorage
+    try {
+      await AsyncStorage.setItem('theme_preference', newIsEnabled ? 'dark' : 'light');
+      // Apply your theme change logic here (e.g., changing CSS variables or Redux state)
+      // You might want to reload your app or components based on the new theme setting
+    } catch (error) {
+      console.error('Error saving theme preference:', error);
+    }
+  };
+
+  return (
+    <View style={styles.switchContainer}>
+      <Text style={styles.label}>Auto Theme</Text>
+      <Switch
+        trackColor={{ false: '#ccc', true: '#007AFF' }} // Customize the colors as needed
+        thumbColor={isEnabled ? 'white' : 'white'} // Customize the thumb color
+        ios_backgroundColor="#ccc" // Background color for iOS
+        onValueChange={toggleSwitch}
+        value={isEnabled}
+      />
+    </View>
+  );
+};
+
+const MaterialUIInput = () => {
+  const styles = StyleSheet.create({
+    inputContainer: {
+      backgroundColor: '#ffffff', // Material UI input background color
+      borderRadius: 4, // Material UI standard border radius
+      elevation: 2, // Material UI standard elevation for shadow
+      marginVertical: 10,
+      paddingHorizontal: 10,
+    },
+    input: {
+      height: 40,
+      fontSize: 16,
+      paddingHorizontal: 8,
+      color: '#000000', // Text color
+    },
+  });
+  
+  return (
+    <View style={styles.inputContainer}>
+      <TextInput
+        placeholder="Enter text"
+        style={styles.input}
+        underlineColorAndroid="transparent"
+      />
+    </View>
+  );
+};
+const BankCard = ({ accountNumber }:any) => {
+  const styles = StyleSheet.create({
+    cardContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    card: {
+      backgroundColor: '#007AFF', // Bank card background color
+      width: 300,
+      height: 180,
+      borderRadius: 10,
+      padding: 20,
+      elevation: 3, // Add elevation for a slight shadow effect
+    },
+    cardTitle: {
+      color: 'white',
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginBottom: 10,
+    },
+    cardNumberContainer: {
+      backgroundColor: 'white',
+      padding: 10,
+      borderRadius: 5,
+      marginBottom: 10,
+    },
+    cardNumber: {
+      fontSize: 16,
+      fontWeight: 'bold',
+    },
+    cardValidThru: {
+      color: 'white',
+      fontSize: 14,
+    },
+  });
+  return (
+    <View style={styles.cardContainer}>
+      <View style={styles.card}>
+        <Text style={styles.cardTitle}>Bank Card</Text>
+        <View style={styles.cardNumberContainer}>
+          <Text style={styles.cardNumber}>{accountNumber}</Text>
+        </View>
+        <Text style={styles.cardValidThru}>Valid Thru: 12/24</Text>
+      </View>
+    </View>
+  );
+};
+
+
+
+
+
+const MaterialUIButton = () => {
+  return (
+    <TouchableOpacity onPress={() => {/* handle onPress */ }}>
+      <View style={styles.buttonContainer}>
+        <Text style={styles.buttonText}>Button</Text>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+const styles = StyleSheet.create({
+  buttonContainer: {
+    backgroundColor: '#1976D2', // Material UI primary color
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 4, // Material UI standard border radius
+    elevation: 2, // Material UI standard elevation for shadow
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    shadowColor: 'rgba(0, 0, 0, 0.2)', // Custom shadow color
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 2,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+});
+
+
+
+
+const IPhoneFriendlyLoginPage = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 20,
+      backgroundColor: '#ffffff',
+    },
+    logo: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 20,
+    },
+    input: {
+      width: '100%',
+      height: 40,
+      borderWidth: 1,
+      borderColor: '#ccc',
+      borderRadius: 5,
+      paddingLeft: 10,
+      marginBottom: 10,
+    },
+    loginButton: {
+      width: '100%',
+      height: 40,
+      backgroundColor: '#007AFF', // iPhone-style blue color
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 5,
+    },
+    loginButtonText: {
+      color: 'white',
+      fontWeight: 'bold',
+    },
+    forgotPasswordButton: {
+      marginTop: 10,
+    },
+    forgotPasswordButtonText: {
+      color: '#007AFF',
+    },
+  });
+  const handleLogin = () => {
+    // Implement your login logic here
+  };
+
+  return (
+    <View style={styles.container}>
+      <BankCard accountNumber="1234 5678 9012 3456" />
+      <Text style={styles.logo}>Your App Logo</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Username"
+        onChangeText={(text) => setUsername(text)}
+        value={username}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        secureTextEntry={true}
+        onChangeText={(text) => setPassword(text)}
+        value={password}
+      />
+      <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+        <Text style={styles.loginButtonText}>Login</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.forgotPasswordButton}>
+        <Text style={styles.forgotPasswordButtonText}>Forgot Password?</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+
+
+
+
+
+
+
+export default function App() {
+  let colorScheme = useColorScheme();
+  const [style, setStyle] = useState(StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#4a4e69',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  }))
+
+  return (
+    <>
+    
+    <IPhoneFriendlyLoginPage/>
+    </>
+  );
+}
+

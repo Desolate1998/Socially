@@ -1,0 +1,34 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "node_modules": true,
+        ".vscode": true,
+        "package-lock.json": true,
+        "package.json": true,
+        "tsconfig.json": true,
+        "tsconfig.node.json": true,
+        "index.html": true,
+        ".gitignore": true,
+        ".eslintrc.cjs": true,
+        "README.md": true,
+        "vite.config.ts": true
+    },
+    "hide-files.files": [
+        "node_modules",
+        ".vscode",
+        "package-lock.json",
+        "package.json",
+        "tsconfig.json",
+        "tsconfig.node.json",
+        "index.html",
+        ".gitignore",
+        ".eslintrc.cjs",
+        "README.md",
+        "vite.config.ts"
+    ]
+}
