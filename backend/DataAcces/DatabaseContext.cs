@@ -1,6 +1,6 @@
 ﻿using IdentityPackage.Core;
-using Domain.Database;
 using Microsoft.EntityFrameworkCore;
+using Domain.Entities;
 
 namespace DataAcces;
 public class DatabaseContext : IdentityDbContext<DbUser>

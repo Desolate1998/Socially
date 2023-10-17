@@ -4,18 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Utils
-{
-    public interface IErrorHandler
-    {
-        Task ConveyError(string message, string additionalDetail = "", Exception? exception = null);
-    }
+namespace Application.Utils;
 
-    public class ErrorHandler : IErrorHandler
+public interface IErrorHandler
+{
+    public Task ConveyError(string message, string additionalDetail = "", Exception? exception = null);
+}
+
+public class ErrorHandler : IErrorHandler
+{
+    Task IErrorHandler.ConveyError(string message, string additionalDetail, Exception? exception)
     {
-        public Task ConveyError(string message, string additionalDetail = "", Exception? exception = null)
-        {
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }

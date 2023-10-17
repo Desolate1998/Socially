@@ -1,12 +1,12 @@
-using api.Core;
-using api.Utils;
+using api.Middleware;
+using Application;
 using DataAcces;
-using Domain.Database;
+using Domain.Entities;
 using IdentityPackage.ApplicationExtensions;
 using IdentityPackage.Builders;
-using IdentityPackage.Models.BuilderModels;
 using IdentityPackage.Models.Database;
 using IdentityPackage.ServicesExtensions;
+using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,9 +25,9 @@ builder.Services.AddIdentityServices<DbUser, DatabaseContext>(new IdentityDbOpti
     LockOutUserEnabled = true,
     LockFailTimer = { 5, 10, 15 },
     LockoutAfter = 3,
-    VerfiedUserLoginOnly = true,
+    VerfiedUserLoginOnly = false,
     PasswordValidationRules = new PasswordValidationBuilder()
-                             .MustHaveSpecialCharacter(true,"Must have atleast 1 special Character")
+                             .MustHaveSpecialCharacter(true, "Must have atleast 1 special Character")
                              .MustHaveLowerCaseCharacter(true)
                              .HasMinLength(8)
                              .MustHaveUpperCaseCharacter(true)
@@ -35,11 +35,7 @@ builder.Services.AddIdentityServices<DbUser, DatabaseContext>(new IdentityDbOpti
 
 }, builder.Configuration["salt"]);
 
-builder.Services.AddTokenServices(new IdentityTokenSetup()
-{
-    IssuerSigningKey = builder.Configuration["JWTKey"],
-    ValidateLifetime = true
-});
+
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("CorsPolicy", policy =>
@@ -51,8 +47,9 @@ builder.Services.AddCors(opt =>
             .AllowCredentials();
     });
 });
-builder.Services.AddScoped<IErrorHandler, ErrorHandler>();
-builder.Services.AddScoped<IAccountServices,AccountService>();
+
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
@@ -62,6 +59,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseCors("CorsPolicy");
+
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseHttpsRedirection();
 
 

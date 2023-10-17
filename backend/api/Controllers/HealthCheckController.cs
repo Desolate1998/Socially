@@ -1,5 +1,4 @@
-﻿using Domain.Models.API;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
 {
@@ -16,15 +15,11 @@ namespace api.Controllers
         }
 
         [HttpGet("Echo")]
-        [Produces("application/json", Type = typeof(APIResponse<string>))]
+        [Produces("application/json", Type = typeof(string))]
         public IActionResult Echo()
         {
             logger.LogInformation($"Received echo request at {DateTime.UtcNow}");
-            return Ok(new APIResponse<string>()
-            {
-                IsSuccessful = true,
-                Result = "System Online"
-            });
+            return Ok("System is online");
         }
     }
 }
